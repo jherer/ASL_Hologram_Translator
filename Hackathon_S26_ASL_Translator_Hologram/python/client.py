@@ -1,24 +1,33 @@
 import http.client as client
-import json
 import time
 
 
-msg = "TEST yguyguuygyugyugyuih"
+msg = "TEST"
 connection = client.HTTPConnection('192.168.4.22', 80, timeout=10)
 headers = {'Content-type': 'application/json'}
 
 
 def convert_string(s):
-    return  s.replace(' ', '%20')
+    return s.replace(' ', '%20')
 
-def send(conn):
+def send(s):
+    global msg
+    msg = s
+    request(connection)
+
+def request(conn):
     conn.request('GET', f'/send?msg={convert_string(msg)}')
     print("Connection requested GET")
     response = conn.getresponse()
     print(f"Status: {response.status}")
     print(f"Response: {response.read().decode()}")
 
+def close():
+    connection.close()
+    print("Connection closed")
 
+
+"""
 last_update_time = time.time()
 
 while (True):
@@ -34,6 +43,6 @@ while (True):
         print("Program encountered unexpected error")
         print(e)
         break
+"""
 
-connection.close()
-print("Connection closed")
+
